@@ -1,8 +1,8 @@
 <div align="center">
 
-# 🎫 SupportDesk AI
+# 🎫 TicketDesk
 
-### A full-stack customer support & ticketing platform with real-time collaboration and AI-powered replies
+### A fast, keyboard-first support ticketing platform with a split-view workspace and real-time collaboration
 
 🔗 **[Live Demo](https://supportdesk-ai-five.vercel.app)**
 
@@ -18,72 +18,62 @@
 
 ## 📖 Overview
 
-**SupportDesk AI** is a modern, feature-rich helpdesk application built to manage the full lifecycle of customer support tickets. It combines a clean, responsive interface with a robust backend, real-time collaboration via WebSockets, and AI-generated reply suggestions powered by the Anthropic API.
+**TicketDesk** is a modern B2B support tool for managing the full lifecycle of customer tickets — built around a **split-view (master-detail) workspace** inspired by Linear and GitHub Issues. The list lives on the left, the ticket detail on the right, and everything is driven by the URL and the keyboard: no full-page reloads, instant status changes, and live collaboration between agents.
 
-The project was built as a **full-stack portfolio piece** to demonstrate end-to-end development skills: from designing a normalized PostgreSQL schema and building a typed REST API, to crafting a polished React frontend with optimistic UI updates, dark mode, and internationalization.
+The project was built as a **full-stack portfolio piece** to demonstrate end-to-end skills: a normalized PostgreSQL schema, a typed REST API, and a polished React frontend with optimistic UI, URL-driven state, keyboard navigation, and dark mode.
 
 ---
 
 ## 📸 Screenshots
 
-![Dashboard](./screenshots/dashboard.png)
-![Tickets](./screenshots/tickets.png)
-![Automation](./screenshots/automation.png)
-![Reports](./screenshots/reports.png)
-![Email Integration](./screenshots/email-integration.png)
-![Dark Mode](./screenshots/dark-mode.png)
+![Split-view workspace](./screenshots/split-view.png)
+![Ticket detail](./screenshots/detail.png)
+![Dark mode](./screenshots/dark-mode.png)
 
 ---
 
 ## ✨ Key Features
 
-### 🎟️ Ticket Management
-- Create, view, sort, and manage support tickets
-- Server-side **pagination** with page navigation
-- Ticket detail pages with full conversation threads
-- Priority levels (high / medium / low) and custom statuses
-- Real-time messaging with AI-powered reply suggestions
+### 🎟️ Split-View Ticket Workspace
+- **Master-detail layout** — dense ticket list on the left, full detail on the right, each scrolling independently
+- **URL-driven state** — selecting a ticket updates the URL (`?ticketId=104`); opening a direct link activates the ticket instantly
+- **Keyboard navigation** — `↑ / ↓` to move between tickets, `C` to create, `Cmd/Ctrl + K` for the command palette
+- **Optimistic UI** — status and priority changes reflect instantly and reconcile with the server, rolling back on error
+- Inline-editable title, Markdown-friendly description, and a full activity/comment thread
 
 ### 🤖 Automation & Assignment
-- **Assignment Rules** — auto-route tickets to teams based on keywords
-- **Automation Rules** — trigger actions (close, notify, reassign) based on conditions
-- Toggle rules on/off with instant optimistic UI updates
+- **Assignment Rules** — auto-route new tickets to teams based on keywords
+- **Automation Rules** — trigger actions (close, notify, reassign) on conditions
+- Toggle rules on/off with instant optimistic updates
 
 ### 📊 SLA Management
-- Define SLA policies with first-response and resolution targets by priority
-- Live SLA compliance tracking and breach detection
-- Visual breach table with overdue time calculations
+- Define SLA policies with first-response and resolution targets per priority
+- Live compliance tracking and breach detection with overdue calculations
 
 ### 👥 Teams & Collaboration
-- Manage support teams and their members
+- Manage support teams and members
 - **Joint Editing** — real-time collaborative sessions with live chat via **WebSockets**
 - See who's online and working on each ticket
 
 ### 📧 Email Integration
 - Connect and manage multiple mailboxes (Gmail, Outlook, SMTP)
-- Visual dashboard cards with received/sent activity
-- 7-day email activity charts
+- Activity cards with received/sent stats and a 7-day chart
 
 ### 📈 Reports & Analytics
-- Interactive charts for ticket trends and response times
-- Agent performance table with resolution stats
-- Date-range filtering (Today / Week / Month / Year)
+- Charts for ticket trends and response times
+- Agent performance table with date-range filtering
 
-### ⚙️ Settings & UX
-- **Dark Mode** — full theme switching with persistence
-- **Internationalization (i18n)** — English & Ukrainian support
-- **Skeleton loaders** — smooth content-aware loading states instead of spinners
-- **Empty states** — illustrated empty states across all pages
-- **Mobile responsive** — hamburger menu and collapsible sidebar for all screen sizes
-- **Real-time notifications** — WebSocket push notifications in the header
-- Profile management, notification preferences, and security settings
-- Custom ticket statuses and saved answer templates
+### ⚙️ UX
+- **Dark mode** with system-aware theme persistence
+- **Command palette** (`Cmd+K`) for quick search and actions
+- **Skeleton loaders** for content-aware loading
+- **Fully responsive** — collapsible sidebar and mobile layout
 
 ### 🔒 Security
-- **Rate limiting** — API protected with `express-rate-limit` (200 req / 15 min general, 20 req / 15 min for auth)
-- **Helmet.js** — HTTP security headers on all responses
-- **JWT authentication** — token-based auth with role-based access control
-- **Input validation** — all endpoints validated with Zod schemas
+- **JWT authentication** with role-based access control
+- **Input validation** — all endpoints validated with Zod
+- **Rate limiting** via `express-rate-limit`
+- **Helmet.js** security headers
 
 ---
 
@@ -92,167 +82,27 @@ The project was built as a **full-stack portfolio piece** to demonstrate end-to-
 ### Frontend
 | Technology | Purpose |
 |---|---|
-| **React 19** | UI library |
-| **TypeScript** | Type safety across the app |
-| **Vite** | Lightning-fast build tool & dev server |
-| **React Router** | Client-side routing |
-| **TanStack Query (React Query)** | Server-state management, caching & optimistic updates |
-| **Tailwind CSS** | Utility-first styling with dark mode |
-| **Framer Motion** | Smooth animations & modal transitions |
-| **Recharts** | Data visualization & charts |
-| **Lucide React** | Icon system |
-| **react-i18next** | Internationalization (EN / UA) |
+| **React 19 + TypeScript** | UI with full type safety |
+| **Vite** | Build tool & dev server |
+| **React Router** | Client-side routing + URL-driven state |
+| **TanStack Query** | Server-state, caching & optimistic updates |
+| **Tailwind CSS** | Utility-first styling with CSS-variable theming |
+| **Recharts** | Charts for reports |
+| **Lucide React** | Icons |
 | **react-hot-toast** | Toast notifications |
-| **rc-pagination** | Pagination component |
 
 ### Backend
 | Technology | Purpose |
 |---|---|
 | **Node.js + Express** | REST API server |
 | **TypeScript** | Type-safe backend |
-| **PostgreSQL** | Relational database |
-| **Drizzle ORM** | Type-safe database queries & migrations |
+| **PostgreSQL (Neon)** | Relational database |
+| **Drizzle ORM** | Type-safe queries & migrations |
 | **Zod** | Runtime schema validation |
-| **JWT** | Authentication & authorization |
-| **bcrypt** | Password hashing |
-| **ws (WebSocket)** | Real-time collaboration & chat |
-| **Anthropic API** | AI-powered reply suggestions |
-| **Helmet** | HTTP security headers |
-| **express-rate-limit** | API rate limiting |
+| **JWT + bcrypt** | Auth & password hashing |
+| **ws (WebSocket)** | Real-time collaboration |
+| **Helmet · express-rate-limit** | Security headers & rate limiting |
 
 ---
 
 ## 🏗️ Architecture
-
-```
-supportdesk-ai/
-├── backend/
-│   ├── src/
-│   │   ├── db/
-│   │   │   ├── schema/          # Drizzle table definitions
-│   │   │   ├── migrations/      # Generated SQL migrations
-│   │   │   ├── index.ts         # DB connection
-│   │   │   └── seed.ts          # Seed data
-│   │   ├── routes/              # Express route handlers
-│   │   ├── middleware/          # Auth & request middleware
-│   │   ├── lib/                 # Auth helpers, utilities
-│   │   └── index.ts             # Server entry + WebSocket setup
-│   └── drizzle.config.ts
-│
-└── frontend/
-    ├── src/
-    │   ├── pages/               # Route-level page components
-    │   ├── components/          # Feature-grouped UI components
-    │   ├── services/            # Typed API client functions
-    │   ├── context/             # Theme context
-    │   ├── hooks/               # Custom hooks (WebSocket, notifications)
-    │   ├── i18n/                # Translation files (en / ua)
-    │   ├── lib/                 # Axios instance
-    │   └── App.tsx              # Route definitions
-    └── vite.config.ts
-```
-
-### Design Patterns
-- **Server-state via React Query** — every data fetch is cached by key, with optimistic updates for toggles and mutations, and automatic cache invalidation on success.
-- **Typed API layer** — all backend calls go through dedicated service functions, keeping components clean and endpoints centralized.
-- **Feature-grouped components** — UI is organized by domain (assignment, automation, sla, etc.) rather than by type.
-- **Dual-channel real-time** — collaboration combines REST (for persistence) with WebSockets (for instant delivery).
-- **In-memory caching** — dashboard stats cached server-side for 60 seconds to reduce DB load.
-
----
-
-## 🚀 Getting Started
-
-### Prerequisites
-- **Node.js** 18+
-- **PostgreSQL** 14+
-- An **Anthropic API key** (optional, for AI replies)
-
-### 1. Clone the repository
-```bash
-git clone https://github.com/Fanchuk/supportdesk-ai.git
-cd supportdesk-ai
-```
-
-### 2. Backend setup
-```bash
-cd backend
-npm install
-
-# Create a .env file
-cat > .env << 'EOF'
-DATABASE_URL=postgresql://user:password@localhost:5432/supportdesk
-JWT_SECRET=your-secret-key
-ANTHROPIC_API_KEY=your-anthropic-key
-PORT=3000
-EOF
-
-# Push schema & seed the database
-npx drizzle-kit push
-npx tsx src/db/seed.ts
-
-# Start the server
-npm run dev
-```
-The API runs on **http://localhost:3000**
-
-### 3. Frontend setup
-```bash
-cd frontend
-npm install
-npm run dev
-```
-The app runs on **http://localhost:5173**
-
-### 4. Log in
-Use the seeded admin credentials:
-```
-Email:    admin@desk.com
-Password: password123
-```
-
----
-
-## 📡 API Overview
-
-| Resource | Endpoints |
-|---|---|
-| **Auth** | `POST /api/auth/login` · `POST /api/auth/register` · `GET /api/auth/me` · `PATCH /api/auth/me` |
-| **Tickets** | `GET /api/tickets?page=1&limit=10` · `POST /api/tickets` · `GET /api/tickets/:id` · `PATCH /api/tickets/:id` |
-| **Messages** | `POST /api/tickets/:id/messages` · `POST /api/tickets/:id/messages/ai-reply` |
-| **Teams** | `GET /api/teams` · `POST /api/teams` · `POST /api/teams/:id/members` |
-| **Assignment Rules** | `GET /api/assignment-rules` · `POST` · `PATCH /:id` |
-| **Automation** | `GET /api/automation-rules` · `GET /stats` · `POST` · `PATCH /:id` |
-| **SLA** | `GET /api/sla/stats` · `GET /policies` · `GET /breaches` |
-| **Custom Statuses** | `GET /api/custom-statuses` · `POST` · `PATCH /:id` · `DELETE /:id` |
-| **Saved Answers** | `GET /api/saved-answers` · `POST` · `PATCH /:id` · `DELETE /:id` |
-| **Joint Sessions** | `GET /api/joint-sessions` · `GET /stats` · WebSocket for live chat |
-| **Reports** | `GET /api/reports/stats` · `/tickets-by-day` · `/agents` |
-
----
-
-## 🎨 Highlights
-
-- **Optimistic UI** — toggles and edits update instantly, then reconcile with the server, rolling back gracefully on error.
-- **Real-time collaboration** — multiple agents can work on the same ticket, chatting live via WebSockets while messages persist to the database.
-- **AI replies** — generate contextual, professional response suggestions using the Anthropic API.
-- **Server-side pagination** — tickets load page by page with full metadata (`total`, `hasNext`, `hasPrev`).
-- **In-memory caching** — dashboard stats cached for 60 seconds to reduce database load.
-- **Dark mode** — a system-aware theme toggle persisted to local storage.
-- **i18n** — seamless English ↔ Ukrainian switching without a page reload.
-- **Skeleton loaders** — content-aware loading skeletons for better perceived performance.
-- **Fully responsive** — collapsible sidebar with hamburger menu on mobile.
-
----
-
-## 📝 License
-
-This project was built for portfolio and educational purposes.
-
----
-
-<div align="center">
-
-**Built with ❤️ by [Fanchuk](https://github.com/Fanchuk)**
-
-</div>
