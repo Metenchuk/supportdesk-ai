@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import QuickFilterSidebar from './QuickFilterSidebar'
 import TopBar from './TopBar'
 import CommandPalette from '../command/CommandPalette'
@@ -9,13 +9,15 @@ export default function AppShell() {
     const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
     const [paletteOpen, setPaletteOpen] = useState(false)
     const [newTicketOpen, setNewTicketOpen] = useState(false)
+    const location = useLocation()
+    const isTickets = location.pathname === '/tickets'
 
     return (
         <div className="h-screen flex flex-col bg-bg text-text">
             <TopBar onToggleSidebar={() => setSidebarCollapsed((p) => !p)} onOpenPalette={() => setPaletteOpen(true)} />
             <div className="flex-1 flex overflow-hidden">
                 {!sidebarCollapsed && <QuickFilterSidebar onNewTicket={() => setNewTicketOpen(true)} />}
-                <div className="flex-1 flex overflow-hidden min-w-0">
+                <div className={`flex-1 min-w-0 ${isTickets ? 'flex overflow-hidden' : 'overflow-y-auto'}`}>
                     <Outlet context={{ onOpenPalette: () => setPaletteOpen(true), onNewTicket: () => setNewTicketOpen(true) }} />
                 </div>
             </div>

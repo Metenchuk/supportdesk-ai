@@ -28,40 +28,35 @@ export default function TicketsSplitPage() {
     const { data: me } = useQuery({ queryKey: ['me'], queryFn: getCurrentUser })
 
     const { data, isLoading } = useQuery({
-        queryKey: ['tickets', statusFilter, priorityFilter, sort, assigneeFilter],
-        queryFn: () =>
-            getTickets({
-                status: statusFilter || undefined,
-                priority: priorityFilter || undefined,
-                assignee: assigneeFilter || undefined,
-                sort,
-                limit: 100,
-            }),
+        queryKey: ['tickets', statusFilter, priorityFilter, sort],
+        queryFn: () => getTickets({
+            status: statusFilter || undefined,
+            priority: priorityFilter || undefined,
+            sort,
+            limit: 100,
+        }),
     })
 
     const tickets = useMemo(() => {
         let list = data?.data ?? []
+        if (assigneeFilter === 'me' && me?.id) {
+            list = list.filter((t) => t.assigned_to_id === me.id)
+        }
         if (search) {
             const q = search.toLowerCase()
             list = list.filter((t) => t.title.toLowerCase().includes(q) || t.user_name?.toLowerCase().includes(q))
         }
         return list
-    }, [data, search])
+    }, [data, search, assigneeFilter, me])
 
-    const selectTicket = useCallback(
-        (id: number | null) => {
-            setSearchParams(
-                (prev) => {
-                    const next = new URLSearchParams(prev)
-                    if (id === null) next.delete('ticketId')
-                    else next.set('ticketId', String(id))
-                    return next
-                },
-                { replace: true },
-            )
-        },
-        [setSearchParams],
-    )
+    const selectTicket = useCallback((id: number | null) => {
+        setSearchParams((prev) => {
+            const next = new URLSearchParams(prev)
+            if (id === null) next.delete('ticketId')
+            else next.set('ticketId', String(id))
+            return next
+        }, { replace: true })
+    }, [setSearchParams])
 
     const currentIndex = tickets.findIndex((t) => String(t.id) === ticketId)
 
@@ -91,7 +86,7 @@ export default function TicketsSplitPage() {
     })
 
     return (
-        <div className="flex-1 grid overflow-hidden" style={{ gridTemplateColumns: '380px 1fr' }}>
+        <div className="flex-1 grid overflow-hidden h-full" style={{ gridTemplateColumns: '380px 1fr' }}>
             <TicketListPanel
                 ref={listRef}
                 tickets={tickets}
@@ -109,7 +104,11 @@ export default function TicketsSplitPage() {
             />
 
             <div className="overflow-hidden flex flex-col border-l border-border">
-                {ticketId ? <TicketDetailPanel ticketId={Number(ticketId)} onClose={() => selectTicket(null)} /> : <EmptyDetailState onOpenPalette={onOpenPalette} />}
+                {ticketId ? (
+                    <TicketDetailPanel ticketId={Number(ticketId)} onClose={() => selectTicket(null)} />
+                ) : (
+                    <EmptyDetailState onOpenPalette={onOpenPalette} />
+                )}
             </div>
         </div>
     )
