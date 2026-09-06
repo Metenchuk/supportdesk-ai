@@ -110,34 +110,24 @@ body {
 .dark .bg-gray-100 {
     background-color: rgb(var(--bg-hover)) !important;
 }
-
-.dark .text-gray-900,
-.dark .text-\[#1c1c1c\],
-.dark .text-\[#202020\],
-.dark .text-\[#212b36\] {
+.dark .text-gray-900 {
     color: rgb(var(--text)) !important;
 }
-
 .dark .text-gray-700,
-.dark .text-gray-600,
-.dark .text-\[#3a4452\] {
+.dark .text-gray-600 {
     color: rgb(var(--text-muted)) !important;
 }
-
 .dark .text-gray-500,
 .dark .text-gray-400 {
     color: rgb(var(--text-faint)) !important;
 }
-
 .dark .border-gray-200,
 .dark .border-gray-100 {
     border-color: rgb(var(--border)) !important;
 }
-
 .dark .border-gray-300 {
     border-color: rgb(var(--border-strong)) !important;
 }
-
 .dark input,
 .dark textarea,
 .dark select {
@@ -145,12 +135,10 @@ body {
     color: rgb(var(--text)) !important;
     border-color: rgb(var(--border)) !important;
 }
-
 .dark input::placeholder,
 .dark textarea::placeholder {
     color: rgb(var(--text-faint)) !important;
 }
-
 .dark .divide-gray-100 > * + * {
     border-color: rgb(var(--border)) !important;
 }
