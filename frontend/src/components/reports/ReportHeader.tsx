@@ -1,5 +1,3 @@
-import ExportButton from "../dashboard/ExportButton"
-
 const periods = ['Today', 'Week', 'Month', 'Year']
 
 interface Props {
@@ -29,7 +27,6 @@ export default function ReportHeader({ period, onPeriodChange }: Props) {
                         )
                     })}
                 </div>
-                <ExportButton />
             </div>
         </div>
     )

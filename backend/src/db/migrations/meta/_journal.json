@@ -15,6 +15,13 @@
       "when": 1785181313110,
       "tag": "0001_greedy_hercules",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1788722332610,
+      "tag": "0002_ordinary_umar",
+      "breakpoints": true
     }
   ]
 }

@@ -9,7 +9,7 @@ export const tickets = pgTable('tickets', {
     status: text('status', { enum: ['open', 'in_progress', 'closed'] })
         .default('open')
         .notNull(),
-    priority: text('priority', { enum: ['low', 'medium', 'high'] })
+    priority: text('priority', { enum: ['low', 'medium', 'high', 'urgent'] })
         .default('medium')
         .notNull(),
     category: text('category'),

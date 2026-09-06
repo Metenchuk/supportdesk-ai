@@ -3,10 +3,8 @@ import { Eye, EyeOff, Shield, Smartphone } from 'lucide-react'
 import { useMutation } from '@tanstack/react-query'
 import { changePassword } from '../../services/auth'
 import toast from 'react-hot-toast'
-import { useTranslation } from 'react-i18next'
 
 export default function SettingsSecurity() {
-    const { t } = useTranslation()
     const [showCurrent, setShowCurrent] = useState(false)
     const [showNew, setShowNew] = useState(false)
     const [showConfirm, setShowConfirm] = useState(false)
@@ -31,15 +29,15 @@ export default function SettingsSecurity() {
 
     return (
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6">
-            <h2 className="text-lg font-semibold text-[#202020] dark:text-gray-100 mb-6">{t('security')}</h2>
+            <h2 className="text-lg font-semibold text-[#202020] dark:text-gray-100 mb-6">Security</h2>
 
             <div className="mb-6">
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">{t('changePassword')}</p>
+                <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">Change Password</p>
                 <div className="flex flex-col gap-4">
                     {[
-                        { label: t('currentPassword'), key: 'current', show: showCurrent, toggle: () => setShowCurrent(p => !p) },
-                        { label: t('newPassword'), key: 'newPass', show: showNew, toggle: () => setShowNew(p => !p) },
-                        { label: t('confirmPassword'), key: 'confirm', show: showConfirm, toggle: () => setShowConfirm(p => !p) },
+                        { label: 'Current Password', key: 'current', show: showCurrent, toggle: () => setShowCurrent(p => !p) },
+                        { label: 'New Password', key: 'newPass', show: showNew, toggle: () => setShowNew(p => !p) },
+                        { label: 'Confirm Password', key: 'confirm', show: showConfirm, toggle: () => setShowConfirm(p => !p) },
                     ].map(({ label, key, show, toggle }) => (
                         <div key={key} className="flex flex-col gap-1.5">
                             <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
@@ -67,8 +65,8 @@ export default function SettingsSecurity() {
                         <Smartphone size={16} className="text-[#0A86F5]" />
                     </div>
                     <div>
-                        <p className="text-sm font-medium text-[#202020] dark:text-gray-200">{t('twoFactor')}</p>
-                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{t('twoFactorDesc')}</p>
+                        <p className="text-sm font-medium text-[#202020] dark:text-gray-200">Two-Factor Authentication</p>
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Add an extra layer of security to your account.</p>
                     </div>
                 </div>
                 <button onClick={() => {
@@ -87,8 +85,8 @@ export default function SettingsSecurity() {
                         <Shield size={16} className="text-[#0A86F5]" />
                     </div>
                     <div>
-                        <p className="text-sm font-medium text-[#202020] dark:text-gray-200">{t('activeSessions')}</p>
-                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{t('activeSessionsDesc')}</p>
+                        <p className="text-sm font-medium text-[#202020] dark:text-gray-200">Active Sessions</p>
+                        <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">Manage the devices currently logged into your account.</p>
                     </div>
                 </div>
                 <div className="flex flex-col gap-2">
@@ -102,8 +100,8 @@ export default function SettingsSecurity() {
                                 <p className="text-xs text-gray-400 dark:text-gray-500">{s.location}</p>
                             </div>
                             {s.current
-                                ? <span className="text-xs font-medium text-[#0A86F5] bg-[rgba(10,134,245,0.08)] px-2 py-0.5 rounded-full">{t('current')}</span>
-                                : <button onClick={() => toast.success('Session terminated')} className="text-xs text-red-500 hover:underline">{t('terminate')}</button>
+                                ? <span className="text-xs font-medium text-[#0A86F5] bg-[rgba(10,134,245,0.08)] px-2 py-0.5 rounded-full">Current</span>
+                                : <button onClick={() => toast.success('Session terminated')} className="text-xs text-red-500 hover:underline">Terminate</button>
                             }
                         </div>
                     ))}
@@ -113,7 +111,7 @@ export default function SettingsSecurity() {
             <button onClick={handleSave} disabled={isPending}
                 className="h-10 px-6 bg-[#0A86F5] hover:bg-[#0875d4] disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors"
             >
-                {isPending ? t('changingPassword') : t('changePassword')}
+                {isPending ? 'Changing Password...' : 'Change Password'}
             </button>
         </div>
     )

@@ -2,15 +2,14 @@ import { useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Bell, Moon, Shield } from 'lucide-react'
 import { useTheme } from '../../context/ThemeContext'
-import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 
 interface Props { open: boolean; onClose: () => void }
 
 export default function SettingsModal({ open, onClose }: Props) {
     const { theme, setTheme } = useTheme()
-    const { i18n } = useTranslation()
     const [notifications, setNotifications] = useState(true)
+    const [language, setLanguage] = useState(localStorage.getItem('language') || 'en')
     const isDark = theme === 'dark'
 
     const handleSave = () => {
@@ -91,11 +90,11 @@ export default function SettingsModal({ open, onClose }: Props) {
                                     {[{ code: 'en', label: 'EN' }, { code: 'ua', label: 'UA' }].map(({ code, label }) => (
                                         <button key={code}
                                             onClick={() => {
-                                                i18n.changeLanguage(code)
+                                                setLanguage(code)
                                                 localStorage.setItem('language', code)
                                             }}
                                             className={`px-3 h-8 rounded-lg text-xs font-medium border transition-all ${
-                                                i18n.language === code
+                                                language === code
                                                     ? 'border-[#0A86F5] bg-[rgba(10,134,245,0.08)] text-[#0A86F5]'
                                                     : 'border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-300'
                                             }`}

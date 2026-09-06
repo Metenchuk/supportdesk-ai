@@ -1,26 +1,28 @@
 import { Router, Response } from 'express'
 import { db } from '../db'
 import { tickets, users } from '../db/schema'
-import { eq, desc, sql } from 'drizzle-orm'
+import { eq, sql } from 'drizzle-orm'
 import { authenticate, requireRole, AuthRequest } from '../middleware/auth'
-import { classifyTicket } from '../lib/ai/classify'
 import { z } from 'zod'
 
 const router = Router()
 
 router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
     try {
-        const { status, priority, sort } = req.query
+        const { status, priority, sort, assignee } = req.query
         const page = parseInt(req.query.page as string) || 1
         const limit = parseInt(req.query.limit as string) || 10
-        const offset  = (page - 1) * limit
+        const offset = (page - 1) * limit
 
         let query = sql`
         SELECT
-           t.id, t.title, t.status, t.priority, t.created_at, t.updated_at,
-           u.name as user_name, u.email as user_email
+           t.id, t.title, t.status, t.priority, t.category, t.created_at, t.updated_at,
+           t.assigned_to_id, t.team_id,
+           u.name as user_name, u.email as user_email,
+           a.name as assignee_name
         FROM tickets t
         LEFT JOIN users u ON t.created_by_id = u.id
+        LEFT JOIN users a ON t.assigned_to_id = a.id
         WHERE 1=1
         `
 
@@ -32,11 +34,15 @@ router.get('/', authenticate, async (req: AuthRequest, res: Response) => {
             query = sql`${query} AND t.priority = ${priority}`
         }
 
-        query = sql`${query} ORDER BY t.created_at ${sort === 'asc' ? sql`ASC` : sql`DESC`}`
+        if (assignee === 'me' && req.user?.id) {
+            query = sql`${query} AND t.assigned_to_id = ${req.user.id}`
+        }
 
         const countQuery = sql`SELECT COUNT(*) as total FROM (${query}) as sub`
         const countResult = await db.execute(countQuery)
         const total = Number((countResult.rows[0] as any).total)
+
+        query = sql`${query} ORDER BY t.created_at ${sort === 'asc' ? sql`ASC` : sql`DESC`}`
 
         const paginatedQuery = sql`${query} LIMIT ${limit} OFFSET ${offset}`
         const result = await db.execute(paginatedQuery)
@@ -63,7 +69,7 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response) => {
         const schema = z.object({
             title: z.string().min(3),
             description: z.string().min(10),
-            priority: z.enum(['low', 'medium', 'high']).optional(),
+            priority: z.enum(['low', 'medium', 'high', 'urgent']).optional(),
             category: z.string().optional(),
         })
 
@@ -88,24 +94,13 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response) => {
             }
         }
 
-        let aiPriority: 'low' | 'medium' | 'high' = 'medium'
-        let aiCategory = 'General'
-
-        try {
-            const classification = await classifyTicket(body.title, body.description)
-            aiPriority = classification.priority
-            aiCategory = classification.category
-        } catch (error) {
-            console.error('AI classification failed:', error)
-        }
-
         const [ticket] = await db
             .insert(tickets)
             .values({
                 title: body.title,
                 description: body.description,
-                priority: body.priority || aiPriority,
-                category: body.category || aiCategory,
+                priority: body.priority || 'medium',
+                category: body.category || 'General',
                 status: 'open',
                 createdById: req.user?.id,
                 teamId: assignedTeamId,
@@ -122,8 +117,9 @@ router.post('/', authenticate, async (req: AuthRequest, res: Response) => {
 router.patch('/:id', authenticate, async (req: AuthRequest, res: Response) => {
     try {
         const schema = z.object({
+            title: z.string().min(3).optional(),
             status: z.enum(['open', 'in_progress', 'closed']).optional(),
-            priority: z.enum(['low', 'medium', 'high']).optional(),
+            priority: z.enum(['low', 'medium', 'high', 'urgent']).optional(),
             assignedToId: z.number().optional(),
             teamId: z.number().optional(),
         })
@@ -190,7 +186,7 @@ router.get('/:id', authenticate, async (req: AuthRequest, res: Response) => {
         const ticket = result.rows[0]
 
         if (!ticket) {
-            return res.status(404).json({ error: 'Ticket no found' })
+            return res.status(404).json({ error: 'Ticket not found' })
         }
 
         const messagesResult = await db.execute(sql`

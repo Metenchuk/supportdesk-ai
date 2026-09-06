@@ -1,4 +1,5 @@
 import api from '../lib/api'
+import type { TicketDetail, TicketListItem } from '../types/ticket'
 
 export interface TicketsPagination {
     page: number
@@ -10,22 +11,16 @@ export interface TicketsPagination {
 }
 
 export interface TicketsResponse {
-    data: any[]
+    data: TicketListItem[]
     pagination: TicketsPagination
 }
 
-export const getTickets = (params?: {
-    status?: string
-    priority?: string
-    sort?: string
-    page?: number
-    limit?: number
-}) => api.get('/tickets', { params }).then(r => r.data as TicketsResponse)
+export const getTickets = (params?: { status?: string; priority?: string; sort?: string; page?: number; limit?: number }) => api.get('/tickets', { params }).then((r) => r.data as TicketsResponse)
 
-export const getTicketById = (id: number) => api.get(`/tickets/${id}`).then((r) => r.data)
+export const getTicketById = (id: number) => api.get(`/tickets/${id}`).then((r) => r.data as TicketDetail)
 
 export const createTicket = (data: { title: string; description: string; priority?: string; category?: string }) => api.post('/tickets', data).then((r) => r.data)
 
-export const updateTicket = (id: number, data: { status?: string; priority?: string; assignedToId?: number; teamId?: number }) => api.patch(`/tickets/${id}`, data).then((r) => r.data)
+export const updateTicket = (id: number, data: { title?: string; status?: string; priority?: string; assignedToId?: number; teamId?: number }) => api.patch(`/tickets/${id}`, data).then((r) => r.data)
 
 export const deleteTicket = (id: number) => api.delete(`/tickets/${id}`).then((r) => r.data)

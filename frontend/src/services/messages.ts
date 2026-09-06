@@ -1,5 +1,4 @@
 import api from '../lib/api'
+import type { TicketMessage } from '../types/ticket'
 
-export const sendMessage = (ticketId: number, body: string) => api.post(`/tickets/${ticketId}/messages`, { body }).then((r) => r.data)
-
-export const getAiReply = (ticketId: number) => api.post(`/tickets/${ticketId}/messages/ai-reply`).then((r) => r.data)
+export const sendMessage = (ticketId: number, body: string) => api.post(`/tickets/${ticketId}/messages`, { body }).then((r) => r.data as TicketMessage)

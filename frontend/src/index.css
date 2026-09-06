@@ -2,30 +2,100 @@
 @tailwind components;
 @tailwind utilities;
 
-.rc-pagination-green .rc-pagination-item-active {
-    background: #0a86f5;
-    border-color: #0a86f5;
+:root {
+    --bg: 255 255 255;
+    --bg-subtle: 250 250 250;
+    --bg-hover: 244 244 245;
+    --border: 228 228 231;
+    --border-strong: 212 212 216;
+    --text: 24 24 27;
+    --text-muted: 113 113 122;
+    --text-faint: 161 161 170;
+
+    --accent: 37 99 235;
+    --accent-fg: 255 255 255;
+
+    --status-open: 217 119 6;
+    --status-open-bg: 254 243 199;
+    --status-progress: 37 99 235;
+    --status-progress-bg: 219 234 254;
+    --status-closed: 22 163 74;
+    --status-closed-bg: 220 252 231;
+
+    --priority-low: 22 163 74;
+    --priority-medium: 217 119 6;
+    --priority-high: 220 38 38;
+
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 10px;
+
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
 }
 
-.rc-pagination-green .rc-pagination-item-active a {
-    color: #fff;
+.dark {
+    --bg: 9 9 11;
+    --bg-subtle: 17 17 20;
+    --bg-hover: 24 24 27;
+    --border: 39 39 42;
+    --border-strong: 63 63 70;
+    --text: 244 244 245;
+    --text-muted: 161 161 170;
+    --text-faint: 113 113 122;
+
+    --accent: 59 130 246;
+    --accent-fg: 255 255 255;
+
+    --status-open: 251 191 36;
+    --status-open-bg: 66 47 8;
+    --status-progress: 96 165 250;
+    --status-progress-bg: 23 37 74;
+    --status-closed: 74 222 128;
+    --status-closed-bg: 12 44 24;
+
+    --priority-low: 74 222 128;
+    --priority-medium: 251 191 36;
+    --priority-high: 248 113 113;
 }
 
-.rc-pagination-green .rc-pagination-item:hover {
-    border-color: #0a86f5;
+* {
+    border-color: rgb(var(--border));
 }
 
-.rc-pagination-green .rc-pagination-item:hover a {
-    color: #0a86f5;
+html,
+body,
+#root {
+    height: 100%;
 }
 
-.rc-pagination-green .rc-pagination-prev button,
-.rc-pagination-green .rc-pagination-next button {
-    color: #6b7280;
+body {
+    font-family: var(--font-sans);
+    background: rgb(var(--bg));
+    color: rgb(var(--text));
+    -webkit-font-smoothing: antialiased;
 }
 
-.rc-pagination-green .rc-pagination-prev:hover button,
-.rc-pagination-green .rc-pagination-next:hover button {
-    color: #0a86f5;
-    border-color: #0a86f5;
+.font-mono-tabular {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: rgb(var(--border-strong));
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--text-faint));
+}
+
+* {
+    transition-duration: 100ms !important;
 }

@@ -2,12 +2,10 @@ import { useState, useEffect } from 'react'
 import { Camera } from 'lucide-react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import { getCurrentUser, updateProfile } from '../../services/auth'
-import { useTranslation } from 'react-i18next'
 import toast from 'react-hot-toast'
 import Spinner from '../ui/Spinner'
 
 export default function SettingsProfile() {
-    const { t } = useTranslation()
     const qc = useQueryClient()
     const [form, setForm] = useState({ name: '', email: '', role: '' })
 
@@ -33,7 +31,7 @@ export default function SettingsProfile() {
 
     return (
         <div className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-2xl p-6">
-            <h2 className="text-lg font-semibold text-[#202020] dark:text-gray-100 mb-6">{t('profile')}</h2>
+            <h2 className="text-lg font-semibold text-[#202020] dark:text-gray-100 mb-6">Profile</h2>
 
             <div className="flex items-center gap-4 mb-6">
                 <div className="relative">
@@ -52,9 +50,9 @@ export default function SettingsProfile() {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
                 {[
-                    { label: t('fullName'), key: 'name', type: 'text', disabled: false },
-                    { label: t('email'), key: 'email', type: 'email', disabled: false },
-                    { label: t('role'), key: 'role', type: 'text', disabled: true },
+                    { label: 'Full Name', key: 'name', type: 'text', disabled: false },
+                    { label: 'Email Address', key: 'email', type: 'email', disabled: false },
+                    { label: 'Role', key: 'role', type: 'text', disabled: true },
                 ].map(({ label, key, type, disabled }) => (
                     <div key={key} className="flex flex-col gap-1.5">
                         <label className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</label>
@@ -75,7 +73,7 @@ export default function SettingsProfile() {
             <button onClick={() => save()} disabled={isPending}
                 className="h-10 px-6 bg-[#0A86F5] hover:bg-[#0875d4] disabled:opacity-60 text-white text-sm font-medium rounded-lg transition-colors"
             >
-                {isPending ? t('saving') : t('saveChanges')}
+                {isPending ? 'Saving...' : 'Save Changes'}
             </button>
         </div>
     )
