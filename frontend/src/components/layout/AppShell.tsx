@@ -15,11 +15,19 @@ export default function AppShell() {
     return (
         <div className="h-screen flex flex-col bg-bg text-text">
             <TopBar onToggleSidebar={() => setSidebarCollapsed((p) => !p)} onOpenPalette={() => setPaletteOpen(true)} />
-            <div className="flex-1 flex overflow-hidden">
+            <div className="flex-1 flex min-h-0">
                 {!sidebarCollapsed && <QuickFilterSidebar onNewTicket={() => setNewTicketOpen(true)} />}
-                <div className={`flex-1 min-w-0 ${isTickets ? 'flex overflow-hidden' : 'overflow-y-auto'}`}>
-                    <Outlet context={{ onOpenPalette: () => setPaletteOpen(true), onNewTicket: () => setNewTicketOpen(true) }} />
-                </div>
+                {isTickets ? (
+                    <div className="flex-1 flex overflow-hidden min-w-0">
+                        <Outlet context={{ onOpenPalette: () => setPaletteOpen(true), onNewTicket: () => setNewTicketOpen(true) }} />
+                    </div>
+                ) : (
+                    <div className="flex-1 overflow-y-auto min-w-0">
+                        <div className="p-6">
+                            <Outlet context={{ onOpenPalette: () => setPaletteOpen(true), onNewTicket: () => setNewTicketOpen(true) }} />
+                        </div>
+                    </div>
+                )}
             </div>
 
             <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} onNewTicket={() => setNewTicketOpen(true)} />
